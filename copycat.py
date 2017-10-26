@@ -9,11 +9,6 @@ BOT_NAME = 'copycatbot'
 client_id = os.environ["SLACK_CLIENT_ID"]
 client_secret = os.environ["SLACK_CLIENT_SECRET"]
 oauth_scope = os.environ["SLACK_BOT_SCOPE"]
-user_token = os.environ["SLACK_USER_TOKEN"]
-bot_token = os.environ["SLACK_BOT_TOKEN"]
-
-usc = SlackClient(user_token)
-bsc = SlackClient(bot_token)
 
 @app.route("/begin_auth", methods=["GET"])
 def pre_install():
@@ -43,6 +38,8 @@ def post_install():
 
 @app.route("/channels", methods=["GET", "POST"])
 def get_channels():
+    usc = SlackClient(os.environ["SLACK_USER_TOKEN"])
+    bsc = SlackClient(os.environ["SLACK_BOT_TOKEN"])
     channels_slack = usc.api_call("channels.list")
     users_slack = usc.api_call("users.list")
     messages = {}
